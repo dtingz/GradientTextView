@@ -62,25 +62,28 @@ public class GradientTextView extends AppCompatTextView {
 	}
 
 	private int[] calculateGradientPositions(int w, int h) {
-		int[] gradientPositions;
-		if (mAngle < 0 || mAngle > 360) {
-			// TODO: 9/26/2017 fix angle calculations
+		if (mDIRECTION == null) {
+			int fx = (int) (w * Math.cos(Math.toRadians(mAngle)));
+			int fy = (int) (h * Math.sin(Math.toRadians(mAngle)));
+
+			int[] a = new int[4];
+			if (fx < 0) a[0] = Math.abs(fx);else a[2] = fx;
+			if (fy < 0) a[1] = Math.abs(fy);else a[3] = fy;
+			return a;
 		}
-		if (mDIRECTION != null) {
-			switch (mDIRECTION) {
-				case TOP:
-					return new int[]{0, h, 0, 0};
-				case RIGHT:
-					return new int[]{0, 0, w, 0};
-				case BOTTOM:
-					return new int[]{0, 0, 0, h};
-				case LEFT:
-				default:
-					return new int[]{w, 0, 0, 0};
-			}
+
+		switch (mDIRECTION) {
+			case TOP:
+				return new int[]{0, h, 0, 0};
+			case RIGHT:
+				return new int[]{0, 0, w, 0};
+			case BOTTOM:
+				return new int[]{0, 0, 0, h};
+			case LEFT:
+			default:
+				return new int[]{w, 0, 0, 0};
+
 		}
-		//should not reach here
-		return new int[]{0, 0, 0, 0};
 	}
 
 	private void init(Context context, AttributeSet attributeSet) {
